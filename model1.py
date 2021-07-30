@@ -23,3 +23,12 @@ sample_sub = pd.read_csv('../data/sample_submission.csv')
 display(train)
 display(test)
 display(sample_sub)
+
+
+def add_two_numbers(a,b):
+    """ Add two numbers and return the sum """
+    return a + b
+
+def calculate_correlation_coefficient(x: list,y:list):
+    """ Calculate correlation coefficient between two variables """
+        return np.corrcoef(x,y)[0,1]

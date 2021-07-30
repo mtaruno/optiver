@@ -20,18 +20,23 @@ class ETL:
         return read_temp.to_pandas()
 
 
-def seed_everything(seed=42):
+    def seed_everything(self, seed=42):
         class CFG:   
             seed=2021
             n_fold=5
             max_model=10
             max_runtime_secs=180 #10800
-    random.seed(seed)
-    os.environ['PYTHONHASHSEED'] = str(seed)
-    np.random.seed(seed)
 
-seed_everything(seed=CFG.seed)
+        random.seed(seed)
+        os.environ['PYTHONHASHSEED'] = str(seed)
+        np.random.seed(seed)
+
+        
 
     def main(self):
-        pass
+        self.seed_everything(seed=CFG.seed)
+        
+
+
+
 

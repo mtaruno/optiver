@@ -13,7 +13,6 @@ warnings.filterwarnings("ignore")
 import numpy as np # linear algebra
 
 train = pd.read_csv("data/train.csv")
-train
 
 
 # visualizing volatility
@@ -40,19 +39,9 @@ def seed_everything(seed=42):
 seed_everything(seed=CFG.seed)
 # %%
 import pyarrow.parquet as pq
-# ETL
-def load_data(path):
-    temp = pq.ParquetDataset(path)
-    book_example = temp.read()
-    book_example = book_example.to_pandas()
-    return book_example
 
 book_train = load_data('data/book_train.parquet/stock_id=0')
 trade_train = load_data('data/trade_train.parquet/stock_id=0')
 # %%
 book_train.head()
 trade_train.head()
-
-# %%
-book_train
-# %%
