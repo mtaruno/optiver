@@ -97,28 +97,43 @@ class ETL:
         np.random.seed(seed)
 
     def ingest_all_parquet(self):
-        """ Ingests all raw parquet data """
+        """ Ingests all raw parquet data: book and trade train and test sets"""
         self.seed_everything(seed=self.seed)
-        data = {key: self.load_data(path) for key, path in self.paths.items()}
+        # data = {key: self.load_data(path) for key, path in self.paths.items()}
 
-        return (
-            data["book_train"],
-            data["trade_train"],
-            data["book_test"],
-            data["trade_test"],
+        data = (
+            self.load_data(path)
+            for path in (
+                self.paths["book_train"],
+                self.paths["trade_train"],
+                self.paths["book_test"],
+                self.paths["trade_test"],
+            )
         )
 
-    def load_all_train_data(self):
-        book_train = self.load_data(self.paths["book_train"])
-        trade_train = self.load_data(self.paths["trade_train"])
-
-        return book_train, trade_train
+        return data
 
     def main(self):
         # book_train, trade_train, book_test, trade_test = self.ingest_all_parquet()
-        demo_all = self.read_all_files("../data/book_train.parquet")
+        demo_all = self.read_all_files(
+            "/Users/mtaruno/Documents/DevZone/optiver/data/book_train.parquet"
+        )
         past_data = pd.read_csv(
             "/Users/mtaruno/Documents/DevZone/optiver/data/train.csv"
         )
         data = self.files_to_numbers(demo_all, past_data, self.paths["train"])
         display(data)
+
+    def read_train_test(self):
+        train = pd.read_csv("/Users/mtaruno/Documents/DevZone/optiver/data/train.csv")
+        test = pd.read_csv("/Users/mtaruno/Documents/DevZone/optiver/data/test.csv")
+        # Create a key to merge with book and trade data
+        train["row_id"] = (
+            train["stock_id"].astype(str) + "-" + train["time_id"].astype(str)
+        )
+        test["row_id"] = (
+            test["stock_id"].astype(str) + "-" + test["time_id"].astype(str)
+        )
+        print(f"Our training set has {train.shape[0]} rows")
+        return train, test
+
